@@ -27,11 +27,12 @@ module CASServer::CAS
   # The optional 'extra_attributes' parameter takes a hash of additional attributes
   # that will be sent along with the username in the CAS response to subsequent
   # validation requests from clients.
-  def generate_ticket_granting_ticket(username, extra_attributes = {})
+  def generate_ticket_granting_ticket(username, authenticator, extra_attributes = {})
     # 3.6 (ticket granting cookie/ticket)
     tgt = TicketGrantingTicket.new
     tgt.ticket = "TGC-" + CASServer::Utils.random_string
     tgt.username = username
+    tgt.authenticator = authenticator
     tgt.extra_attributes = extra_attributes
     tgt.client_hostname = @env['HTTP_X_FORWARDED_FOR'] || @env['REMOTE_HOST'] || @env['REMOTE_ADDR']
     tgt.save!

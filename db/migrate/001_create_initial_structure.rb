@@ -26,6 +26,7 @@ class CreateInitialStructure < ActiveRecord::Migration
       t.timestamp 'created_on',       :null => false
       t.string    'client_hostname',  :null => false
       t.string    'username',         :null => false
+      t.string    'authenticator',    :null => false
       t.text      'extra_attributes', :null => true
     end
 

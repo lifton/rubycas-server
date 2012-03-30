@@ -464,7 +464,7 @@ module CASServer
           $LOG.debug("Authenticator provided additional user attributes: #{extra_attributes.inspect}") unless extra_attributes.blank?
 
           # 3.6 (ticket-granting cookie)
-          tgt = generate_ticket_granting_ticket(@username, extra_attributes)
+          tgt = generate_ticket_granting_ticket(@username, successful_authenticator, extra_attributes)
           response.set_cookie('tgt', tgt.to_s)
 
           $LOG.debug("Ticket granting cookie '#{tgt.inspect}' granted to #{@username.inspect}")
