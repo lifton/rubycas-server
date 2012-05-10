@@ -78,8 +78,6 @@ class CASServer::Authenticators::LDAP < CASServer::Authenticators::Base
     # the user. If a :filter was specified in the :ldap config, the filter will be
     # added to the LDAP query for the username.
     def bind_by_username
-      username_attribute = options[:ldap][:username_attribute] || default_username_attribute
-
       @ldap.bind_as(:base => @options[:ldap][:base], :password => @password, :filter => user_filter)
     end
 
@@ -118,8 +116,13 @@ class CASServer::Authenticators::LDAP < CASServer::Authenticators::Base
     # Finds the user based on the user_filter (this is called after authentication).
     # We do this to make it possible to extract extra_attributes.
     def find_user
-      results = @ldap.search( :base => options[:ldap][:base], :filter => user_filter)
-      return results.first
+      result = @ldap.search( :base => options[:ldap][:base], :filter => user_filter, :return_result => true )
+
+      if result.is_a? Array
+        result = result.first
+      end
+
+      return result
     end
 
     def extract_extra_attributes(ldap_entry)
