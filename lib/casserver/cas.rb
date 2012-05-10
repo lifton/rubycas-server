@@ -24,6 +24,8 @@ module CASServer::CAS
   # Creates a TicketGrantingTicket for the given username. This is done when the user logs in
   # for the first time to establish their SSO session (after their credentials have been validated).
   #
+  # Authenticator is a string describing the successful authenticator.
+  #
   # The optional 'extra_attributes' parameter takes a hash of additional attributes
   # that will be sent along with the username in the CAS response to subsequent
   # validation requests from clients.
