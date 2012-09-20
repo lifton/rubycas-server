@@ -1,4 +1,5 @@
 require 'rubygems'
+require "#{File.dirname(__FILE__)}/../console-auth/lib/console_auth"
 
 # Assume all necessary gems are in place if bundler is not installed.
 begin
@@ -9,6 +10,14 @@ end
 
 $:.unshift "#{File.dirname(__FILE__)}/lib"
 require "casserver"
+
+::ConsoleAuth.init
+
+use Rack::Session::Cookie,
+  :key    => 'tgt',
+  :path   => '/cas',
+  :secret => ::ConsoleAuth.get_config['authentication']['session_secret']
+
 
 use Rack::ShowExceptions
 use Rack::Runtime
