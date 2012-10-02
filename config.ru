@@ -10,10 +10,12 @@ end
 $:.unshift "#{File.dirname(__FILE__)}/lib"
 require "casserver"
 
-use Rack::Session::Cookie,
-  :key    => 'tgt',
-  :path   => '/cas',
-  :secret => CASServer::Server.config['session_secret']
+unless CASServer::Server.config['session_secret'].nil?
+  use Rack::Session::Cookie,
+    :key    => 'tgt',
+    :path   => '/cas',
+    :secret => CASServer::Server.config['session_secret']
+end
 
 use Rack::ShowExceptions
 use Rack::Runtime
