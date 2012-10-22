@@ -333,7 +333,7 @@ module CASServer
 
       # make sure there's no caching
       headers['Pragma'] = 'no-cache'
-      headers['Cache-Control'] = 'no-store'
+      headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
       headers['Expires'] = (Time.now - 1.year).rfc2822
 
       # optional params
