@@ -588,10 +588,15 @@ module CASServer
 
       if @gateway && @service
         redirect @service, 303
-      elsif @continue_url
-        render @template_engine, :logout
       else
-        render @template_engine, :login
+        headers['Pragma'] = 'no-cache'
+        headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        headers['Expires'] = (Time.now - 1.year).rfc2822
+        if @continue_url
+          render @template_engine, :logout
+        else
+          render @template_engine, :login
+        end
       end
     end
   
