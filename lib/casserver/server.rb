@@ -322,6 +322,12 @@ module CASServer
       end
     end
 
+    def disable_caching
+      headers['Pragma'] = 'no-cache'
+      headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+      headers['Expires'] = (Time.now - 1.year).rfc2822
+    end
+
     # The #.#.# comments (e.g. "2.1.3") refer to section numbers in the CAS protocol spec
     # under http://www.ja-sig.org/products/cas/overview/protocol/index.html
     
@@ -332,9 +338,7 @@ module CASServer
       CASServer::Utils::log_controller_action(self.class, params)
 
       # make sure there's no caching
-      headers['Pragma'] = 'no-cache'
-      headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-      headers['Expires'] = (Time.now - 1.year).rfc2822
+      disable_caching
 
       # optional params
       @service = clean_service_url(params['service'])
@@ -589,9 +593,7 @@ module CASServer
       if @gateway && @service
         redirect @service, 303
       else
-        headers['Pragma'] = 'no-cache'
-        headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-        headers['Expires'] = (Time.now - 1.year).rfc2822
+        disable_caching
         if @continue_url
           render @template_engine, :logout
         else
